@@ -16,7 +16,10 @@ public class PrimeGenerator {
 	private static boolean[] primeFlags; //素数标志
 	private static List<Integer> primes; //素数
 	
-
+	/*
+	 * 题目：
+	 * 找出0到指定正整数之间所有素数
+	 */
 	public static void main(String[] args) {
 
 //		int[] intArr = generatePrimes_1(100);
@@ -24,10 +27,17 @@ public class PrimeGenerator {
 //			System.out.println(i);
 //		}
 		
-		generatePrimes_2(10);
+//		generatePrimes_2(10);
+//		for (int i : primes) {
+//			System.out.println(i);
+//		}
+		
+		GetPrimes getPrimes = new GetPrimes();
+		primes = getPrimes.GetPrimes(101, 200);
 		for (int i : primes) {
-			System.out.println(i);
+			System.out.print(i+" ");
 		}
+		
 		
 		
 	}
@@ -51,7 +61,7 @@ public class PrimeGenerator {
 			
 			f[0] = f[1] = false; //0 和 1 都不是素数
 			
-			//从2到sqrt(n)是否存在其约数
+			//从2到sqrt(n)是否存在其约数（找出了合数）
 			int j;
 			for(i=2; i<Math.sqrt(s)+1; i++) {
 				for(j=2*i; j<s; j+=i) {
@@ -59,7 +69,7 @@ public class PrimeGenerator {
 				}
 			}
 			
-			//统计素数个数
+			//统计素数个数（用list保存素数列表可以省去本步骤）
 			int count = 0;
 			for(i=0; i<s; i++) {
 				if(f[i]) {
@@ -135,11 +145,40 @@ public class PrimeGenerator {
 		}
 	}
 	
-	
-	
 }
 
-
+/**
+ * 题目：找出101-200之间的所有素数
+ * 方法：用一个数分别去除2到sqrt(这个数)
+ */
+class GetPrimes{
+	
+	/**
+	 * @param minNum 范围下限
+	 * @param maxNum 范围上限
+	 * @return 范围内所有素数集合
+	 */
+	public List<Integer> GetPrimes(int minNum, int maxNum){
+		
+		List<Integer> primes = new ArrayList<>(); //素数集合
+		
+		for(int i=minNum; i<=maxNum; i++) { //遍历范围内所有正整数
+			
+			boolean falg = true;
+			for(int j=2; j<Math.sqrt(i); j++) { //整除遍历
+				if((double)i % j == 0) {
+					falg = false;
+					break;
+				}
+			}
+			if(falg) {
+				primes.add(i);
+				falg = true;
+			}
+		}
+		return primes;
+	}
+}
 
 
 
